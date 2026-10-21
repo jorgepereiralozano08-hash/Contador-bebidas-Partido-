@@ -1,0 +1,17 @@
+{
+  "name": "Contador de bebidas",
+  "short_name": "Contador",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f8f6",
+  "theme_color": "#126b50",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

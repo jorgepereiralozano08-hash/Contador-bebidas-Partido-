@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#126b50">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Contador">
+<link rel="manifest" href="manifest.json">
+<title>Contador de bebidas</title>
+<style>
+:root{--green:#126b50;--pale:#e5f4ed;--ink:#17211d;--muted:#66716b;--line:#d9e2dc;--bg:#f5f8f6}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;touch-action:pan-x pan-y;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{position:fixed;inset:0}
+.app{height:100dvh;height:100svh;max-width:600px;margin:auto;padding:calc(env(safe-area-inset-top) + 7px) 10px calc(env(safe-area-inset-bottom) + 7px);display:flex;flex-direction:column;gap:7px;overflow:hidden}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0}
+h1{font-size:clamp(17px,4.5vw,22px);line-height:1.1;margin:0;font-weight:800;letter-spacing:-.4px}
+.totalbox{background:var(--green);color:white;border-radius:13px;padding:5px 12px;text-align:center;min-width:68px}
+.totalbox strong{display:block;font-size:clamp(22px,6vw,29px);line-height:1.05;font-variant-numeric:tabular-nums}
+.totalbox span{font-size:10px;opacity:.9}
+.hint{font-size:11px;color:var(--muted);margin:0;flex-shrink:0}
+.drinks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;flex-shrink:0}
+.drink{border:1px solid var(--line);border-radius:10px;background:white;padding:7px 3px;min-height:42px;color:var(--ink);font:inherit;font-size:clamp(11px,3vw,13px);font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px;min-width:0}
+.drink .num{background:#edf1ee;border-radius:7px;min-width:21px;height:21px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-variant-numeric:tabular-nums}
+.drink.active{background:var(--pale);border-color:var(--green);color:#0c553e;box-shadow:inset 0 0 0 1px var(--green)}
+.drink.active .num{background:var(--green);color:white}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;margin-top:1px}
+.sectionhead h2{font-size:15px;margin:0}
+.sectionhead span{font-size:12px;color:var(--muted)}
+.milks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;min-height:0;flex:1;align-content:stretch}
+.milk{display:flex;align-items:center;justify-content:space-between;gap:5px;min-width:0;border:1px solid var(--line);border-radius:10px;background:white;padding:5px 7px}
+.milkname{font-size:clamp(11px,3vw,13px);font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.controls{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.controls button{width:31px;height:31px;border:0;border-radius:9px;background:#eaf0ec;color:var(--green);font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0}
+.controls button:disabled{opacity:.28}
+.controls output{min-width:15px;text-align:center;font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
+footer{display:flex;gap:7px;flex-shrink:0}
+footer button{border:1px solid var(--line);border-radius:10px;background:white;padding:9px 10px;font-size:12px;font-weight:700;color:var(--ink)}
+footer button.primary{background:var(--green);color:white;border-color:var(--green);flex:1}
+.toast{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 55px);left:50%;transform:translateX(-50%);background:#17211d;color:white;padding:8px 12px;border-radius:10px;font-size:12px;display:none;white-space:nowrap}
+@media(max-height:690px){.app{gap:5px;padding-left:8px;padding-right:8px}.drink{min-height:36px;padding:5px 2px}.milk{padding:3px 5px}.controls button{width:28px;height:28px}.milks{gap:4px}}
+</style>
+</head>
+<body>
+<main class="app" aria-label="Contador de bebidas">
+<header><h1>☕ Contador de bebidas</h1><div class="totalbox"><strong id="grandTotal">0</strong><span>BEBIDAS</span></div></header>
+<p class="hint">Elige una bebida y suma cada tipo de leche.</p>
+<nav class="drinks" id="drinks" aria-label="Elegir bebida"></nav>
+<div class="sectionhead"><h2 id="activeTitle">Latte</h2><span>Total de esta bebida: <b id="activeTotal">0</b></span></div>
+<section class="milks" id="milks" aria-label="Tipos de leche"></section>
+<footer><button id="undo">↶ Deshacer</button><button id="reset" class="primary">Reiniciar turno</button></footer>
+<div class="toast" id="toast"></div>
+</main>
+<script>
+const drinkNames=["Latte","Ice Latte","Cappuccino","Macchiato","Solo","Americano"];
+const milkNames=["Soja","Avena","Coco","Almendra","Entera","Desnatada","Sin lactosa"];
+const blank=()=>Object.fromEntries(drinkNames.map(d=>[d,Object.fromEntries(milkNames.map(m=>[m,0]))]));
+let counts;
+try { counts=JSON.parse(localStorage.getItem("contadorBebidas_v1")) || blank(); } catch { counts=blank(); }
+for(const d of drinkNames){if(!counts[d])counts[d]={};for(const m of milkNames)if(!Number.isFinite(counts[d][m]))counts[d][m]=0;}
+let active="Latte", previous=null, toastTimer;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem("contadorBebidas_v1",JSON.stringify(counts));}
+function total(d){return milkNames.reduce((s,m)=>s+(counts[d]?.[m]||0),0);}
+function allTotal(){return drinkNames.reduce((s,d)=>s+total(d),0);}
+function renderDrinks(){
+  $("drinks").innerHTML="";
+  for(const d of drinkNames){
+    const b=document.createElement("button");b.className="drink"+(d===active?" active":"");b.innerHTML=`<span>${d}</span><span class="num">${total(d)}</span>`;
+    b.setAttribute("aria-pressed",d===active?"true":"false");b.addEventListener("click",()=>{active=d;render();});$("drinks").appendChild(b);
+  }
+}
+function renderMilks(){
+  $("milks").innerHTML="";
+  for(const m of milkNames){
+    const row=document.createElement("div");row.className="milk";
+    const name=document.createElement("span");name.className="milkname";name.textContent=m;
+    const controls=document.createElement("div");controls.className="controls";
+    const minus=document.createElement("button");minus.textContent="−";minus.setAttribute("aria-label","Restar "+m);minus.disabled=counts[active][m]===0;
+    minus.addEventListener("click",()=>change(m,-1));
+    const val=document.createElement("output");val.textContent=counts[active][m];val.setAttribute("aria-label",m+" contador");
+    const plus=document.createElement("button");plus.textContent="+";plus.setAttribute("aria-label","Sumar "+m);plus.addEventListener("click",()=>change(m,1));
+    controls.append(minus,val,plus);row.append(name,controls);$("milks").appendChild(row);
+  }
+}
+function render(){renderDrinks();renderMilks();$("activeTitle").textContent=active;$("activeTotal").textContent=total(active);$("grandTotal").textContent=allTotal();}
+function change(m,delta){previous={drink:active,milk:m,value:counts[active][m]};counts[active][m]=Math.max(0,counts[active][m]+delta);save();render();}
+function showToast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display="none",1800);}
+$("undo").addEventListener("click",()=>{if(!previous){showToast("Todavía no hay cambios para deshacer");return;}counts[previous.drink][previous.milk]=previous.value;active=previous.drink;previous=null;save();render();showToast("Último cambio deshecho");});
+$("reset").addEventListener("click",()=>{if(!confirm("¿Reiniciar todos los contadores de este turno?"))return;counts=blank();previous=null;save();render();showToast("Contadores reiniciados");});
+document.addEventListener("touchmove",e=>{if(!e.target.closest("button"))e.preventDefault();},{passive:false});
+let startY=0;document.addEventListener("gesturestart",e=>e.preventDefault());
+render();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script>
+</body>
+</html>
