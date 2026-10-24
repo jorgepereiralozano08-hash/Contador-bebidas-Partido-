@@ -2,98 +2,71 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#126b50">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Contador">
 <link rel="manifest" href="manifest.json">
 <title>Contador de bebidas</title>
 <style>
-:root{--green:#126b50;--pale:#e5f4ed;--ink:#17211d;--muted:#66716b;--line:#d9e2dc;--bg:#f5f8f6}
+:root{--g:#126b50;--p:#e5f4ed;--ink:#17211d;--mut:#66716b;--line:#d9e2dc;--bg:#f5f8f6}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;touch-action:pan-x pan-y;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-body{position:fixed;inset:0}
-.app{height:100dvh;height:100svh;max-width:600px;margin:auto;padding:calc(env(safe-area-inset-top) + 7px) 10px calc(env(safe-area-inset-bottom) + 7px);display:flex;flex-direction:column;gap:7px;overflow:hidden}
-header{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0}
-h1{font-size:clamp(17px,4.5vw,22px);line-height:1.1;margin:0;font-weight:800;letter-spacing:-.4px}
-.totalbox{background:var(--green);color:white;border-radius:13px;padding:5px 12px;text-align:center;min-width:68px}
-.totalbox strong{display:block;font-size:clamp(22px,6vw,29px);line-height:1.05;font-variant-numeric:tabular-nums}
-.totalbox span{font-size:10px;opacity:.9}
-.hint{font-size:11px;color:var(--muted);margin:0;flex-shrink:0}
-.drinks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;flex-shrink:0}
-.drink{border:1px solid var(--line);border-radius:10px;background:white;padding:7px 3px;min-height:42px;color:var(--ink);font:inherit;font-size:clamp(11px,3vw,13px);font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px;min-width:0}
-.drink .num{background:#edf1ee;border-radius:7px;min-width:21px;height:21px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-variant-numeric:tabular-nums}
-.drink.active{background:var(--pale);border-color:var(--green);color:#0c553e;box-shadow:inset 0 0 0 1px var(--green)}
-.drink.active .num{background:var(--green);color:white}
-.sectionhead{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;margin-top:1px}
-.sectionhead h2{font-size:15px;margin:0}
-.sectionhead span{font-size:12px;color:var(--muted)}
-.milks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;min-height:0;flex:1;align-content:stretch}
-.milk{display:flex;align-items:center;justify-content:space-between;gap:5px;min-width:0;border:1px solid var(--line);border-radius:10px;background:white;padding:5px 7px}
-.milkname{font-size:clamp(11px,3vw,13px);font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.controls{display:flex;align-items:center;gap:7px;flex-shrink:0}
-.controls button{width:31px;height:31px;border:0;border-radius:9px;background:#eaf0ec;color:var(--green);font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0}
-.controls button:disabled{opacity:.28}
-.controls output{min-width:15px;text-align:center;font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
-footer{display:flex;gap:7px;flex-shrink:0}
-footer button{border:1px solid var(--line);border-radius:10px;background:white;padding:9px 10px;font-size:12px;font-weight:700;color:var(--ink)}
-footer button.primary{background:var(--green);color:white;border-color:var(--green);flex:1}
-.toast{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 55px);left:50%;transform:translateX(-50%);background:#17211d;color:white;padding:8px 12px;border-radius:10px;font-size:12px;display:none;white-space:nowrap}
-@media(max-height:690px){.app{gap:5px;padding-left:8px;padding-right:8px}.drink{min-height:36px;padding:5px 2px}.milk{padding:3px 5px}.controls button{width:28px;height:28px}.milks{gap:4px}}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+body{position:fixed;inset:0}.app{height:100dvh;height:100svh;max-width:600px;margin:auto;padding:calc(env(safe-area-inset-top) + 7px) 9px calc(env(safe-area-inset-bottom) + 7px);display:flex;flex-direction:column;gap:7px;overflow:hidden}
+header{display:flex;align-items:center;justify-content:space-between;flex-shrink:0}h1{font-size:19px;margin:0}.total{background:var(--g);color:white;border-radius:12px;padding:5px 12px;text-align:center}.total b{display:block;font-size:25px}.total small{font-size:10px}
+.view{display:none;flex:1;min-height:0;overflow:auto;flex-direction:column;gap:9px}.view.on{display:flex}.hint,p{font-size:12px;color:var(--mut);margin:0}
+.drinks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;flex-shrink:0}.drink{border:1px solid var(--line);border-radius:10px;background:white;padding:8px 2px;min-height:40px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;min-width:0}.drink.active{background:var(--p);border-color:var(--g);color:var(--g)}.num{background:#edf1ee;border-radius:6px;padding:3px 5px}
+.sectionhead{display:flex;justify-content:space-between;align-items:center}.sectionhead h2,h2{font-size:17px;margin:0}.milks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;flex:1;align-content:stretch}
+.milk{display:flex;align-items:center;justify-content:space-between;gap:4px;min-width:0;border:1px solid var(--line);border-radius:10px;background:white;padding:5px 6px}.milkname{font-size:12px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.controls{display:flex;align-items:center;gap:5px;flex-shrink:0}.controls button{width:30px;height:30px;border:0;border-radius:8px;background:#eaf0ec;color:var(--g);font-size:20px}.controls output{min-width:14px;text-align:center;font-weight:800}
+footer{display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap}button.action{border:1px solid var(--line);border-radius:10px;background:white;padding:10px;font-size:12px;font-weight:700;color:var(--ink)}button.primary{background:var(--g);color:white;border-color:var(--g);flex:1}
+.list,.day{border:1px solid var(--line);border-radius:11px;overflow:auto;background:white}.line{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid #edf0ee;font-size:13px}.line:last-child{border-bottom:0}.day{padding:10px;display:flex;flex-direction:column;gap:7px}.dayhead{display:flex;justify-content:space-between;font-weight:750;font-size:13px}.details{font-size:12px;color:var(--mut);white-space:pre-line}.small{font-size:11px;padding:7px!important}.empty{text-align:center;padding:15px;color:var(--mut);font-size:13px}.toast{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 18px);left:50%;transform:translateX(-50%);background:#17211d;color:white;padding:9px 13px;border-radius:10px;font-size:12px;display:none;z-index:5;white-space:nowrap}
+@media(max-height:690px){.app{gap:5px}.drink{min-height:35px;padding:5px 1px}.milk{padding:3px 5px}.controls button{width:27px;height:27px}}
 </style>
 </head>
-<body>
-<main class="app" aria-label="Contador de bebidas">
-<header><h1>☕ Contador de bebidas</h1><div class="totalbox"><strong id="grandTotal">0</strong><span>BEBIDAS</span></div></header>
-<p class="hint">Elige una bebida y suma cada tipo de leche.</p>
-<nav class="drinks" id="drinks" aria-label="Elegir bebida"></nav>
-<div class="sectionhead"><h2 id="activeTitle">Latte</h2><span>Total de esta bebida: <b id="activeTotal">0</b></span></div>
-<section class="milks" id="milks" aria-label="Tipos de leche"></section>
-<footer><button id="undo">↶ Deshacer</button><button id="reset" class="primary">Reiniciar turno</button></footer>
+<body><main class="app">
+<header><h1>☕ Contador de bebidas</h1><div class="total"><b id="grand">0</b><small>BEBIDAS</small></div></header>
+<section id="home" class="view on" style="overflow:hidden">
+<p>Elige una bebida y suma sus unidades.</p><nav id="drinks" class="drinks"></nav>
+<div class="sectionhead"><h2 id="activeTitle">Latte</h2><p>Total: <b id="activeTotal">0</b></p></div>
+<section id="milks" class="milks"></section>
+<div id="plain" class="milk" style="display:none"><span class="milkname">Bebidas sin leche</span><div class="controls"><button id="minus" aria-label="Restar">−</button><output id="plainCount">0</output><button id="plus" aria-label="Sumar">+</button></div></div>
+<footer><button class="action" id="historyBtn">Historial</button><button class="action primary" id="finish">Finalizar turno</button></footer>
+</section>
+<section id="summary" class="view"><h2>Recuento del turno</h2><p id="sumDate"></p><div id="sumList" class="list"></div><div class="line"><b>Total de bebidas</b><b id="sumTotal">0</b></div>
+<footer><button class="action" id="copy">📋 Copiar recuento</button><button class="action" id="back">Volver al contador</button><button class="action primary" id="new">Nuevo turno</button></footer></section>
+<section id="history" class="view"><h2>Historial por días</h2><p>Turnos finalizados guardados en este dispositivo.</p><div id="historyList" style="display:flex;flex-direction:column;gap:8px"></div><footer><button class="action primary" id="historyHome">Volver al menú principal</button></footer></section>
 <div class="toast" id="toast"></div>
 </main>
 <script>
-const drinkNames=["Latte","Ice Latte","Cappuccino","Macchiato","Solo","Americano"];
-const milkNames=["Soja","Avena","Coco","Almendra","Entera","Desnatada","Sin lactosa"];
-const blank=()=>Object.fromEntries(drinkNames.map(d=>[d,Object.fromEntries(milkNames.map(m=>[m,0]))]));
-let counts;
-try { counts=JSON.parse(localStorage.getItem("contadorBebidas_v1")) || blank(); } catch { counts=blank(); }
-for(const d of drinkNames){if(!counts[d])counts[d]={};for(const m of milkNames)if(!Number.isFinite(counts[d][m]))counts[d][m]=0;}
-let active="Latte", previous=null, toastTimer;
+const drinks=["Latte","Ice Latte","Cappuccino","Macchiato","Solo","Americano"],milks=["Soja","Avena","Coco","Almendra","Entera","Desnatada","Sin lactosa"],plain=["Solo","Americano"];
+const blank=()=>Object.fromEntries(drinks.map(d=>[d,plain.includes(d)?0:Object.fromEntries(milks.map(m=>[m,0]))]));
+const load=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}},clone=x=>JSON.parse(JSON.stringify(x));
+let counts=load("cb_counts_v4",blank()),history=load("cb_history_v4",[]),active="Latte",lastSummary=null;
+for(const d of drinks){if(plain.includes(d)){if(!Number.isFinite(counts[d]))counts[d]=0}else{counts[d]??={};for(const m of milks)if(!Number.isFinite(counts[d][m]))counts[d][m]=0}}
 const $=id=>document.getElementById(id);
-function save(){localStorage.setItem("contadorBebidas_v1",JSON.stringify(counts));}
-function total(d){return milkNames.reduce((s,m)=>s+(counts[d]?.[m]||0),0);}
-function allTotal(){return drinkNames.reduce((s,d)=>s+total(d),0);}
-function renderDrinks(){
-  $("drinks").innerHTML="";
-  for(const d of drinkNames){
-    const b=document.createElement("button");b.className="drink"+(d===active?" active":"");b.innerHTML=`<span>${d}</span><span class="num">${total(d)}</span>`;
-    b.setAttribute("aria-pressed",d===active?"true":"false");b.addEventListener("click",()=>{active=d;render();});$("drinks").appendChild(b);
-  }
-}
-function renderMilks(){
-  $("milks").innerHTML="";
-  for(const m of milkNames){
-    const row=document.createElement("div");row.className="milk";
-    const name=document.createElement("span");name.className="milkname";name.textContent=m;
-    const controls=document.createElement("div");controls.className="controls";
-    const minus=document.createElement("button");minus.textContent="−";minus.setAttribute("aria-label","Restar "+m);minus.disabled=counts[active][m]===0;
-    minus.addEventListener("click",()=>change(m,-1));
-    const val=document.createElement("output");val.textContent=counts[active][m];val.setAttribute("aria-label",m+" contador");
-    const plus=document.createElement("button");plus.textContent="+";plus.setAttribute("aria-label","Sumar "+m);plus.addEventListener("click",()=>change(m,1));
-    controls.append(minus,val,plus);row.append(name,controls);$("milks").appendChild(row);
-  }
-}
-function render(){renderDrinks();renderMilks();$("activeTitle").textContent=active;$("activeTotal").textContent=total(active);$("grandTotal").textContent=allTotal();}
-function change(m,delta){previous={drink:active,milk:m,value:counts[active][m]};counts[active][m]=Math.max(0,counts[active][m]+delta);save();render();}
-function showToast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display="none",1800);}
-$("undo").addEventListener("click",()=>{if(!previous){showToast("Todavía no hay cambios para deshacer");return;}counts[previous.drink][previous.milk]=previous.value;active=previous.drink;previous=null;save();render();showToast("Último cambio deshecho");});
-$("reset").addEventListener("click",()=>{if(!confirm("¿Reiniciar todos los contadores de este turno?"))return;counts=blank();previous=null;save();render();showToast("Contadores reiniciados");});
-document.addEventListener("touchmove",e=>{if(!e.target.closest("button"))e.preventDefault();},{passive:false});
-let startY=0;document.addEventListener("gesturestart",e=>e.preventDefault());
-render();
-if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
-</script>
-</body>
-</html>
+const total=d=>plain.includes(d)?counts[d]:milks.reduce((s,m)=>s+counts[d][m],0),all=()=>drinks.reduce((s,d)=>s+total(d),0);
+function save(){localStorage.setItem("cb_counts_v4",JSON.stringify(counts));localStorage.setItem("cb_history_v4",JSON.stringify(history))}
+const dateKey=()=>{let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const dateLabel=k=>{let[y,m,d]=k.split("-");return d+"/"+m+"/"+y};
+function show(id){["home","summary","history"].forEach(x=>$(x).classList.toggle("on",x===id))}
+function render(){ $("drinks").innerHTML="";drinks.forEach(d=>{let b=document.createElement("button");b.className="drink"+(d===active?" active":"");b.innerHTML=d+' <span class="num">'+total(d)+'</span>';b.onclick=()=>{active=d;render()};$("drinks").append(b)});
+$("activeTitle").textContent=active;$("activeTotal").textContent=total(active);$("grand").textContent=all();
+$("milks").style.display=plain.includes(active)?"none":"grid";$("plain").style.display=plain.includes(active)?"flex":"none";
+if(plain.includes(active)){$("plainCount").textContent=counts[active];$("minus").disabled=counts[active]===0}else{$("milks").innerHTML="";milks.forEach(m=>{let r=document.createElement("div");r.className="milk";let n=document.createElement("span");n.className="milkname";n.textContent=m;let c=document.createElement("div");c.className="controls";let minus=document.createElement("button");minus.textContent="−";minus.disabled=counts[active][m]===0;minus.onclick=()=>change(m,-1);let val=document.createElement("output");val.textContent=counts[active][m];let plus=document.createElement("button");plus.textContent="+";plus.onclick=()=>change(m,1);c.append(minus,val,plus);r.append(n,c);$("milks").append(r)})}}
+function change(m,delta){counts[active][m]=Math.max(0,counts[active][m]+delta);save();render()}
+function changePlain(delta){counts[active]=Math.max(0,counts[active]+delta);save();render()}
+function rows(c){let out=[];drinks.forEach(d=>{if(plain.includes(d)){if(c[d]>0)out.push([d+" (sin leche)",c[d]])}else milks.forEach(m=>{if(c[d][m]>0)out.push([d+" "+m.toLowerCase(),c[d][m]])})});return out}
+function summary(c){lastSummary=clone(c);$("sumList").innerHTML="";let rs=rows(c);if(!rs.length)$("sumList").innerHTML='<div class="empty">No se han contado bebidas en este turno.</div>';rs.forEach(([label,n])=>{let r=document.createElement("div");r.className="line";let a=document.createElement("span");a.textContent=label;let b=document.createElement("b");b.textContent="× "+n;r.append(a,b);$("sumList").append(r)});$("sumTotal").textContent=drinks.reduce((s,d)=>s+(plain.includes(d)?c[d]:milks.reduce((a,m)=>a+c[d][m],0)),0)}
+function copySummary(){if(!lastSummary)return;let lines=rows(lastSummary).map(([label,n])=>label+" x"+n);let sum=drinks.reduce((s,d)=>s+(plain.includes(d)?lastSummary[d]:milks.reduce((a,m)=>a+lastSummary[d][m],0)),0);let date=$("sumDate").textContent;let text="RECUENTO DE BEBIDAS — "+(date.match(/\d{2}\/\d{2}\/\d{4}/)?.[0]||dateKey().split("-").reverse().join("/"))+"\n\n"+(lines.length?lines.join("\n"):"Sin bebidas registradas")+"\n\nTOTAL: "+sum+" bebidas";
+if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(()=>toast("Recuento copiado")).catch(()=>fallbackCopy(text))}else fallbackCopy(text)}
+function fallbackCopy(text){let ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.append(ta);ta.select();try{document.execCommand("copy");toast("Recuento copiado")}catch(e){prompt("Copia el recuento:",text)}ta.remove()}
+function toast(msg){let t=$("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",1800)}
+$("minus").onclick=()=>changePlain(-1);$("plus").onclick=()=>changePlain(1);
+$("finish").onclick=()=>{let item={date:dateKey(),time:new Date().toISOString(),counts:clone(counts),total:all()};history.push(item);save();$("sumDate").textContent="Turno finalizado el "+dateLabel(item.date);summary(counts);show("summary")};
+$("copy").onclick=copySummary;$("back").onclick=()=>{show("home");render()};
+$("new").onclick=()=>{counts=blank();active="Latte";lastSummary=null;save();render();show("home")};
+$("historyBtn").onclick=()=>{renderHistory();show("history")};$("historyHome").onclick=()=>{show("home");render()};
+function renderHistory(){let root=$("historyList");root.innerHTML="";if(!history.length){root.innerHTML='<div class="empty">Todavía no hay turnos finalizados.</div>';return}let groups={};[...history].reverse().forEach(h=>(groups[h.date]??=[]).push(h));Object.entries(groups).forEach(([day,items])=>{let card=document.createElement("div");card.className="day";let head=document.createElement("div");head.className="dayhead";let a=document.createElement("span");a.textContent=dateLabel(day);let b=document.createElement("span");b.textContent=items.reduce((s,h)=>s+h.total,0)+" bebidas";head.append(a,b);card.append(head);items.forEach(h=>{let p=document.createElement("div");p.className="details";p.textContent="Turno "+new Date(h.time).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})+" · "+h.total+" bebidas";let btn=document.createElement("button");btn.className="action small";btn.textContent="Ver desglose";btn.onclick=()=>{$("sumDate").textContent="Turno del "+dateLabel(h.date)+" · "+new Date(h.time).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});summary(h.counts);show("summary")};card.append(p,btn)});root.append(card)})}
+document.addEventListener("gesturestart",e=>e.preventDefault());render();
+if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script></body></html>

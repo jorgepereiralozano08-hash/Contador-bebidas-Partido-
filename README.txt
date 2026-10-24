@@ -1,16 +1,19 @@
-# Contador de bebidas
+CONTADOR DE BEBIDAS — VERSIÓN ACTUALIZADA
 
-App web personal para iPhone: 6 bebidas, 7 tipos de leche por bebida, contadores automáticos, almacenamiento local, botón para deshacer y reinicio de turno. Diseño compacto que intenta ocupar la pantalla sin desplazamiento.
+Archivos que debes subir a GitHub: index.html, manifest.json, icon.svg y sw.js. README.txt es informativo.
 
-## Publicar gratis con GitHub Pages
-1. Entra en https://github.com y crea un repositorio llamado `contador-bebidas`.
-2. Para que el enlace no sea público, el repositorio puede ser privado, pero la disponibilidad de GitHub Pages con repositorios privados depende del plan. En el plan gratuito lo más sencillo es usar un repositorio público; no subas datos personales.
-3. Dentro del repositorio pulsa **Add file → Upload files**.
-4. Descomprime el ZIP en tu móvil/ordenador y sube los archivos de esta carpeta: `index.html`, `manifest.json`, `icon.svg`, `sw.js`.
-5. Pulsa **Commit changes**.
-6. Ve a **Settings → Pages**. En **Build and deployment**, selecciona **Deploy from a branch**, branch `main`, folder `/(root)` y pulsa **Save**.
-7. Espera a que GitHub publique la web. El enlace suele ser `https://TU-USUARIO.github.io/contador-bebidas/`.
-8. Abre el enlace en Safari del iPhone → botón Compartir → **Añadir a pantalla de inicio**.
+Incluye:
+- Solo y Americano sin opciones de leche, con contador +/−.
+- Finalizar turno y ver el desglose por bebida y leche.
+- Botón «Copiar recuento» para pegar el texto en WhatsApp u otro chat.
+- «Nuevo turno» reinicia los contadores sin borrar el historial.
+- Historial agrupado por días y desglose de cada turno.
+- Diseño compacto para iPhone y bloqueo del desplazamiento principal.
 
-## Privacidad y datos
-Los contadores se guardan localmente en el navegador del dispositivo. No hay cuenta ni servidor que reciba los conteos. El código publicado en GitHub Pages será visible para quien pueda acceder al repositorio/página. Para mantener el uso personal, no introduzcas datos sensibles y no compartas el enlace. Si necesitas privacidad real mediante acceso, hará falta alojamiento con control de acceso.
+Para actualizar la app ya publicada:
+1. Abre tu repositorio de GitHub.
+2. En Code > Add file > Upload files, sube los cuatro archivos actualizados.
+3. Pulsa Commit changes y confirma la sustitución de los archivos si te lo pide.
+4. Espera unos minutos. Cierra y vuelve a abrir la app; si ves la versión antigua, abre la web en Safari y recarga.
+
+Los recuentos e historial se guardan localmente en este navegador/dispositivo. Borrar datos del sitio puede eliminarlos. La web de GitHub Pages es accesible para quien tenga el enlace.
